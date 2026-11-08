@@ -1,6 +1,8 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 select no_plan();
+-- Start from the known demo seed (rolled back with the transaction).
+select ops_private.seed_demo_data();
 
 \set admin  '''0e000000-0000-4000-8000-0000000000ad'''
 \set sam    '''0e000000-0000-4000-8000-000000000051'''
