@@ -58,6 +58,13 @@
 }
 
 @layer components {
+  /* Scroll containers must be positioned: otherwise absolutely positioned
+     descendants (e.g. Tailwind sr-only labels inside table buttons) use the
+     page as their containing block, escape the clipping and widen the page
+     on mobile. */
+  .overflow-x-auto {
+    position: relative;
+  }
   .input {
     @apply block w-full rounded-md border border-line-strong bg-surface px-3 py-1.5 text-sm text-ink
       placeholder:text-ink-subtle disabled:cursor-not-allowed disabled:bg-canvas;

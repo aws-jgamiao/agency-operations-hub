@@ -68,7 +68,7 @@ export default async function Dashboard() {
             {!myTasks.data?.length ? (
               <p className="p-5 text-sm text-ink-muted">Nothing assigned to you. Enjoy it while it lasts.</p>
             ) : (
-              <table className="data-table">
+              <div className="overflow-x-auto"><table className="data-table">
                 <caption className="sr-only">Your open tasks</caption>
                 <thead><tr><th scope="col">Task</th><th scope="col">Priority</th><th scope="col">Due</th></tr></thead>
                 <tbody>
@@ -83,7 +83,7 @@ export default async function Dashboard() {
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </table></div>
             )}
           </Card>
 
@@ -91,7 +91,7 @@ export default async function Dashboard() {
             {!overdue.data?.length ? (
               <p className="p-5 text-sm text-ink-muted">Nothing overdue.</p>
             ) : (
-              <table className="data-table">
+              <div className="overflow-x-auto"><table className="data-table">
                 <caption className="sr-only">Overdue tasks</caption>
                 <thead><tr><th scope="col">Task</th><th scope="col">Owner</th><th scope="col">Due</th></tr></thead>
                 <tbody>
@@ -106,7 +106,7 @@ export default async function Dashboard() {
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </table></div>
             )}
           </Card>
         </div>
