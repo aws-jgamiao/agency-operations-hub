@@ -15,6 +15,11 @@ export interface SlackSender {
 }
 
 const MAX_TEXT = 3000;
+
+/** Slack treats <, > and & as control characters (mentions, links). Escape user text so a title like "<!channel>" stays literal. */
+export function escapeSlackText(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 const DEFAULT_RETRY_AFTER = 30;
 
 /** Only real Slack webhook hosts over HTTPS: prevents the server from being used to reach other URLs (SSRF). */
@@ -48,7 +53,7 @@ export function createSlackSender(
         res = await fetchImpl(webhookUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: payload.text.slice(0, MAX_TEXT) }),
+          body: JSON.stringify({ text: escapeSlackText(payload.text.slice(0, MAX_TEXT)) }),
           signal: AbortSignal.timeout(timeoutMs),
           redirect: "error",
         });

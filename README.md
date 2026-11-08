@@ -84,8 +84,8 @@ Database: migrations in `supabase/migrations/`, `npm run db:reset`, `npm run db:
 
 | Command | Covers | Last local run (2026-11-08) |
 |---|---|---|
-| `npm run test:db` | pgTAP: workspace RLS, staff field guard, audit immutability and diffs, outbox leases and Retry-After, KB visibility, deactivation, grants, reset scope, trigger regression | 47 passed |
-| `npm run test:unit` | Slack client against mocked `fetch` (200, 429, 5xx, 4xx, timeout, network, SSRF), dispatcher (stop and release on 429, spacing), cursors, schemas, dates, audit formatting | 45 passed |
+| `npm run test:db` | pgTAP: workspace RLS, staff field guard, audit immutability and diffs, outbox leases and Retry-After, KB visibility, deactivation, grants, reset scope, trigger regression | 59 passed |
+| `npm run test:unit` | Slack client against mocked `fetch` (200, 429, 5xx, 4xx, timeout, network, SSRF), dispatcher (stop and release on 429, spacing), cursors, schemas, dates, audit formatting | 46 passed |
 | `npm run test:integration` | RLS and staff limits over PostgREST with real JWTs; regression for the trigger bug | 6 passed |
 | `npm run test:e2e` | Production build: REST contract (401, 404, 409, 403, 422, CSRF, pagination), concurrent edits, Slack mock deliveries and 429, request workflow, KB restrictions, admin 404s, deactivation, axe, mobile | 19 passed |
 
@@ -117,8 +117,7 @@ was developed on `fix/notification-trigger-enum-cast` and merged with `--no-ff`.
 
 ## Future work
 
-- A scheduled delivery worker with its own least-privilege credential (closes the
-  insider-suppression trade-off in SECURITY.md).
+- A scheduled delivery worker with its own least-privilege credential.
 - Slack interactive messages.
 - Saved task views.
 - Markdown rendering for KB articles.

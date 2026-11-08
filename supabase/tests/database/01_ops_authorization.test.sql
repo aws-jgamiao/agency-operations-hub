@@ -74,6 +74,10 @@ select is((select count(*)::int from ops.notification_outbox where event_type = 
 select pg_temp.act_as(:sam);
 set local role authenticated;
 select is_empty($$ select 1 from ops.notification_outbox $$, 'staff cannot read the delivery log');
+reset role;
+-- The worker runs as the admin whose change queued the message (staff can only claim their own; see 03).
+select pg_temp.act_as(:admin);
+set local role authenticated;
 create temp table claimed as select * from ops.claim_notifications(10);
 select is((select count(*)::int from claimed), 1, 'a worker claims the due notification');
 select is((select count(*)::int from ops.claim_notifications(10)), 0, 'a second claim gets nothing while the lease is held');

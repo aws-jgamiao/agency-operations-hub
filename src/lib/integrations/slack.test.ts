@@ -87,3 +87,13 @@ describe("createMockSender", () => {
     spy.mockRestore();
   });
 });
+
+describe("escapeSlackText", () => {
+  it("neutralises mentions and links in user-supplied titles", async () => {
+    const { escapeSlackText } = await import("./slack");
+    expect(escapeSlackText('Fix <!channel> & <https://evil|click>')).toBe("Fix &lt;!channel&gt; &amp; &lt;https://evil|click&gt;");
+    const f = vi.fn<typeof fetch>(async () => new Response("ok"));
+    await createSlackSender(URL_OK, { fetchImpl: f }).send({ text: "<!here>" });
+    expect(JSON.parse(f.mock.calls[0]![1]?.body as string).text).toBe("&lt;!here&gt;");
+  });
+});

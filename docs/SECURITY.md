@@ -37,10 +37,27 @@ proxy (SSRF).
 | `reset_demo` | demo admins | role, `is_demo` and active | restore sample data |
 | `audit`, `enqueue_*_notification`, guards | triggers | — | history, outbox, field rules |
 
-**Known trade-off:** any active member can call the claim/complete RPCs, because deliveries are
-triggered by whoever made the change. A malicious insider could mark notifications as sent.
-Notification contents are generated in SQL, so they can't be forged. Moving delivery to a
-scheduled worker with its own credential would close this; see "Future work" in the README.
+**Outbox access:** deliveries are triggered by whoever made the change, so members can call the
+claim/complete RPCs, but staff can only claim notifications **their own** changes produced
+(). Admins can claim all. Contents are generated in SQL and can't be forged. A
+scheduled worker with its own credential would remove member access entirely (Future work).
+
+## Internal review (2026-11-08)
+
+An independent read-only review found these issues, all fixed in
+ and tested in :
+- Staff could claim, read and suppress every queued notification.
+- Staff could self-assign via INSERT or change request priority.
+- A request's client didn't have to match its workspace.
+- Workspace KB drafts leaked through the audit log.
+- Authors kept access to articles an admin had restricted; deactivated authors could still delete.
+- The staff guards honoured a session setting.
+- Slack text was unescaped (mentions and links).
+
+**Accepted:**
+- The demo reset clears the audit log (demo only).
+- The KB slug-uniqueness error confirms that a slug exists.
+- The audit trigger's seeding flag can't be set over PostgREST, but could be from direct SQL.
 
 ## Shared Supabase project
 
@@ -53,7 +70,7 @@ Shared auth settings and quotas are accepted residual risks (see `../../PLAN.md`
 
 ## Tests that prove it
 
-- pgTAP (47 checks), covering:
+- pgTAP (59 checks), covering:
   - workspace scoping
   - staff field limits
   - audit immutability and diffs
