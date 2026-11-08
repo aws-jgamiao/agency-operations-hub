@@ -1,6 +1,6 @@
 # Deployment (Vercel + the shared Supabase project)
 
-> Status: **not yet deployed.** Every step that changes the remote database is shown for review
+> Status: **deployed 2026-11-08** to the shared Supabase project and Vercel (https://agency-operations-hub-woad.vercel.app). Steps kept for reference. Every step that changes the remote database is shown for review
 > first and is only run with the owner's approval.
 
 ## 1. Supabase (shared project): one-time setup

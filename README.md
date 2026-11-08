@@ -11,7 +11,7 @@ It's built to show backend engineering:
 
 ![Dashboard](docs/screenshots/02-dashboard.png)
 
-> **Live demo:** not yet deployed (see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)). All data is
+> **Live demo:** https://agency-operations-hub-woad.vercel.app (one-click demo sign-in). All data is
 > synthetic. Slack runs in a clearly labelled **mock mode** unless a webhook is configured.
 
 ## Try it
@@ -89,8 +89,7 @@ Database: migrations in `supabase/migrations/`, `npm run db:reset`, `npm run db:
 | `npm run test:integration` | RLS and staff limits over PostgREST with real JWTs; regression for the trigger bug | 6 passed |
 | `npm run test:e2e` | Production build: REST contract (401, 404, 409, 403, 422, CSRF, pagination), concurrent edits, Slack mock deliveries and 429, request workflow, KB restrictions, admin 404s, deactivation, axe, mobile | 19 passed |
 
-CI (`.github/workflows/ci.yml`) runs all of these on every push and PR. *CI hasn't run yet
-because the repository hasn't been pushed.*
+CI (`.github/workflows/ci.yml`) runs all of these on every push and PR. CI passes on GitHub Actions.
 
 ## Debugging case study
 
