@@ -39,13 +39,14 @@ proxy (SSRF).
 
 **Outbox access:** deliveries are triggered by whoever made the change, so members can call the
 claim/complete RPCs, but staff can only claim notifications **their own** changes produced
-(). Admins can claim all. Contents are generated in SQL and can't be forged. A
+(`created_by`). Admins can claim all. Contents are generated in SQL and can't be forged. A
 scheduled worker with its own credential would remove member access entirely (Future work).
 
 ## Internal review (2026-11-08)
 
 An independent read-only review found these issues, all fixed in
- and tested in :
+`supabase/migrations/20261108100004_ops_security_hardening.sql` and tested in
+`supabase/tests/database/03_security_hardening.test.sql`:
 - Staff could claim, read and suppress every queued notification.
 - Staff could self-assign via INSERT or change request priority.
 - A request's client didn't have to match its workspace.
