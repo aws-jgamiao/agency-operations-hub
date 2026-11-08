@@ -52,12 +52,9 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (signedIn && pathname === "/login") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
-    url.search = "";
-    return NextResponse.redirect(url);
-  }
+  // No "signed in -> leave /login" redirect here: the cookie can be locally
+  // valid while the Auth server rejects it (e.g. a deleted account), which
+  // would loop with the pages' server-side check. /login decides instead.
 
   return response;
 }

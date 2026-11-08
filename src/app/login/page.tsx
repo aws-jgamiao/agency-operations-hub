@@ -6,6 +6,8 @@ import { ActionForm, SubmitButton, TextField } from "@/components/ui/form";
 import { login } from "@/app/auth/actions";
 import { env } from "@/lib/env";
 import { safeNext } from "@/lib/safe-redirect";
+import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = { title: "Sign in" };
 
@@ -17,6 +19,8 @@ const ERRORS: Record<string, string> = {
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
   const next = safeNext(params.next);
+  // Same server-verified check the app pages use, so the two can never disagree.
+  if ((await getSession()).state === "member") redirect(next);
   const error = typeof params.error === "string" ? ERRORS[params.error] : undefined;
 
   return (
