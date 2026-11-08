@@ -1,26 +1,85 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Agency Operations Hub tokens: cool slate neutrals, amber accent, dark
+   navigation rail. Pairs meet WCAG 2.2 AA (4.5:1) or better. */
+@theme {
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --color-canvas: #f5f6f8;
+  --color-surface: #ffffff;
+  --color-line: #e1e5eb;
+  --color-line-strong: #c9d0da;
+  --color-ink: #0f172a;          /* 17.1:1 on canvas */
+  --color-ink-muted: #475569;    /* 7.2:1 on canvas */
+  --color-ink-subtle: #5f6b7d;   /* 5.4:1 on surface */
+
+  --color-rail: #0f172a;         /* navigation background */
+  --color-rail-ink: #cbd5e1;     /* 11.6:1 on rail */
+
+  --color-brand: #b45309;        /* amber-700, 5.0:1 with white */
+  --color-brand-hover: #92400e;
+  --color-brand-soft: #fef3c7;
+  --color-brand-ink: #8a3a0b;    /* 7.4:1 on brand-soft */
+
+  --color-ok: #166534;
+  --color-ok-soft: #dcfce7;
+  --color-warn: #854d0e;
+  --color-warn-soft: #fef9c3;
+  --color-danger: #b91c1c;
+  --color-danger-soft: #fee2e2;
+  --color-info: #1d4ed8;
+  --color-info-soft: #dbeafe;
+
+  --radius-card: 0.625rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-canvas text-ink antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-info);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .input {
+    @apply block w-full rounded-md border border-line-strong bg-surface px-3 py-1.5 text-sm text-ink
+      placeholder:text-ink-subtle disabled:cursor-not-allowed disabled:bg-canvas;
+  }
+  .input[aria-invalid="true"] {
+    @apply border-danger;
+  }
+  .card {
+    @apply rounded-[var(--radius-card)] border border-line bg-surface;
+  }
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg
+      focus:bg-surface focus:px-4 focus:py-2 focus:shadow;
+  }
+  .data-table {
+    @apply w-full text-left text-sm;
+  }
+  .data-table th[scope="col"] {
+    @apply border-b border-line px-3 py-2 text-xs font-semibold uppercase tracking-wide text-ink-muted;
+  }
+  .data-table td,
+  .data-table th[scope="row"] {
+    @apply border-b border-line px-3 py-2.5 align-top;
+  }
 }

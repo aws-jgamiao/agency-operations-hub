@@ -597,6 +597,23 @@ begin
 end $$;
 
 
+-- Admins queue a test message from the Integrations page.
+create function ops.enqueue_test_notification() returns bigint
+language plpgsql security definer set search_path = '' as $$
+declare
+  v_id bigint;
+  v_name text;
+begin
+  if not ops_private.is_admin() then
+    raise exception 'not authorized' using errcode = '42501';
+  end if;
+  select full_name into v_name from ops.members where id = auth.uid();
+  insert into ops.notification_outbox (event_type, payload)
+  values ('integration.test', jsonb_build_object('text', format('Test notification from Ops Hub, sent by %s', v_name)))
+  returning id into v_id;
+  return v_id;
+end $$;
+
 -- ---------------------------------------------------------------------------
 -- Privileges
 -- ---------------------------------------------------------------------------
@@ -639,3 +656,4 @@ grant execute on function ops.task_summary(date)            to authenticated;
 grant execute on function ops.claim_notifications(integer)  to authenticated;
 grant execute on function ops.complete_notification(bigint, uuid, text, integer, text, integer, text) to authenticated;
 grant execute on function ops.retry_notification(bigint)    to authenticated;
+grant execute on function ops.enqueue_test_notification()  to authenticated;
